@@ -1,0 +1,11 @@
+{
+  "name": "helioheat",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev": "bash start.sh",
+    "build": "npm --prefix frontend run build",
+    "start": "node backend/server.js"
+  }
+}
