@@ -104,9 +104,7 @@ export default function App() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Explain failed')
       setEmail(data.text)
-      if (data.warning) setEmailError(data.warning)
-    } catch (err) {
-      setEmailError(err.message || 'Could not write the customer email.')
+      setEmailError(data.text ? '' : (data.warning || data.error || 'Could not write the customer email.'))
     } finally {
       setEmailLoading(false)
     }
