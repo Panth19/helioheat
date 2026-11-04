@@ -25,6 +25,7 @@ export default function App() {
   const [error, setError] = useState('')
   const [llmReady, setLlmReady] = useState(false)
   const [email, setEmail] = useState('')
+  const [emailSource, setEmailSource] = useState('')
   const [emailError, setEmailError] = useState('')
   const [emailLoading, setEmailLoading] = useState(false)
 
@@ -83,6 +84,7 @@ export default function App() {
       if (!res.ok) throw new Error('Plan failed')
       setPlan(await res.json())
       setEmail('')
+      setEmailSource('')
       setEmailError('')
     } catch {
       setError('Could not build a heating plan. Is the API running?')
@@ -104,7 +106,8 @@ export default function App() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Explain failed')
       setEmail(data.text)
-      setEmailError(data.text ? '' : (data.warning || data.error || 'Could not write the customer email.'))
+      setEmailSource(data.source === 'groq' ? `Written by Groq · ${data.model}` : '')
+      setEmailError('')
     } finally {
       setEmailLoading(false)
     }
@@ -263,6 +266,7 @@ export default function App() {
                       : 'Optional. Add USER_LLM_API_KEY on the server to generate a customer email from this plan. The planner does not need AI.'}
                   </p>
                   {emailError ? <p className="error">{emailError}</p> : null}
+                  {emailSource ? <p className="explain-note">{emailSource}</p> : null}
                   {email ? <pre className="email">{email}</pre> : null}
                 </div>
 
